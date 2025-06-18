@@ -75,15 +75,11 @@ WSGI_APPLICATION = 'todo_exptrack.wsgi.application'
 
 # Database
 # Using PostgreSQL for production, fallback to SQLite for local dev
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'railway'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('RAILWAY_PRIVATE_DOMAIN', 'localhost'),
-        'PORT': os.getenv('PGPORT', '5432'),
-    }
+    'default': dj_database_url.config(
+        default=f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('RAILWAY_TCP_PROXY_DOMAIN')}:{os.getenv('RAILWAY_TCP_PROXY_PORT')}/{os.getenv('POSTGRES_DB')}"
+    )
 }
 
 

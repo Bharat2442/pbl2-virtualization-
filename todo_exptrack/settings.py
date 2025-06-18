@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,11 +74,15 @@ WSGI_APPLICATION = 'todo_exptrack.wsgi.application'
 
 
 # Database
-# Using SQLite for local development
+# Using PostgreSQL for production, fallback to SQLite for local dev
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'railway'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('RAILWAY_PRIVATE_DOMAIN', 'localhost'),
+        'PORT': os.getenv('PGPORT', '5432'),
     }
 }
 

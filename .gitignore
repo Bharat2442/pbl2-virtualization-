@@ -1,0 +1,17 @@
+db.sqlite3
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+*.swp
+*.swo
+.DS_Store
+*.egg-info/
+dist/
+build/

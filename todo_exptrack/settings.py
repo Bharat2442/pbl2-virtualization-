@@ -26,7 +26,14 @@ SECRET_KEY = 'django-insecure-hi&7&-6*o!6#ao7t+n^qxmxl-5++7f_(zi9iayexe8jdr=6doj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'pbl2-virtualization-production.up.railway.app',
+    '127.0.0.1',
+    'localhost',
+]
+
+# Optional: allow Railway env auto host
+ALLOWED_HOSTS += os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition

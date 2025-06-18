@@ -77,11 +77,8 @@ WSGI_APPLICATION = 'todo_exptrack.wsgi.application'
 # Using PostgreSQL for production, fallback to SQLite for local dev
 import dj_database_url
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('RAILWAY_TCP_PROXY_DOMAIN')}:{os.getenv('RAILWAY_TCP_PROXY_PORT')}/{os.getenv('POSTGRES_DB')}"
-    )
+    'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

@@ -1,1 +1,1 @@
-web: gunicorn todo_exptrack.wsgi
+web: gunicorn todo_exptrack.wsgi:application --bind 0.0.0.0:8080

@@ -1,0 +1,7 @@
+{% extends 'todo_list/main.html' %}
+{% block content %}
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Logout</button>
+</form>
+{% endblock content %}

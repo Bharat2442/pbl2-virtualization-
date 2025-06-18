@@ -1,0 +1,49 @@
+{% extends 'todo_list/main.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; height: 80vh; background-color: #f8f8f8;">
+    <div style="width: 400px; background: white; border-radius: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); overflow: hidden;">
+        
+        <!-- Header -->
+        <div style="background: linear-gradient(to right, #e57373, #ef5350); padding: 20px;">
+            <h2 style="margin: 0; color: white; font-weight: bold; text-align: center;">Add / Update Budget</h2>
+        </div>
+        
+        <!-- Body -->
+        <div style="padding: 25px;">
+            <form method="post">
+                {% csrf_token %}
+                
+                <label style="font-size: 16px; font-weight: 500;">{{ form.total_budget.label }}</label><br>
+                {{ form.total_budget }}
+                
+                {% if form.total_budget.errors %}
+                    <div style="color: red; margin-top: 8px;">{{ form.total_budget.errors }}</div>
+                {% endif %}
+                
+                <!-- Buttons -->
+                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                    <input type="submit" value="Save" 
+                        style="padding: 10px 20px; background-color: #e57373; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    
+                    <a href="{% url 'expense_list' %}" 
+                        style="padding: 10px 20px; border: 1px solid #e57373; color: #e57373; border-radius: 5px; text-decoration: none;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Custom style for input -->
+<style>
+input[type=number] {
+    font-size: 1.2rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+</style>
+{% endblock content %}

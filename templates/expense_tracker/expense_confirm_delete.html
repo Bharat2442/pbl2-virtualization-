@@ -1,0 +1,16 @@
+{% extends 'todo_list/main.html' %}
+
+{% block content %}
+<div class="header-bar">
+    <h1>Delete Expense</h1>
+</div>
+
+<div class="card-body">
+    <p>Are you sure you want to delete the expense: <strong>{{ expense.title }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="Confirm Delete">
+        <a href="{% url 'expense_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

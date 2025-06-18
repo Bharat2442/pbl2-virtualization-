@@ -1,0 +1,36 @@
+{% extends 'todo_list/main.html' %}
+
+{% block content %}
+<div class="header-bar">
+    <h1>Login</h1>
+</div>
+
+<div class="card-body">
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required autofocus>
+        <input type="password" name="password" placeholder="Password" required>
+        <input class="button" type="submit" value="Login">
+    </form>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+
+<!-- Add style to increase spacing between input fields -->
+<style>
+    .login-form input {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;  /* This adds space below each input */
+        box-sizing: border-box;
+    }
+
+    .login-form .button {
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+{% endblock content %}

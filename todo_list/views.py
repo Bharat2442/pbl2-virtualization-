@@ -24,7 +24,31 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        return reverse_lazy('tasks')  # Redirect to task list after login
+        return reverse_lazy('home')  # Redirect to home page after login
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class HomePageView(View):
+    def get(self, request):
+        return render(request, 'home.html')
+
+
+class RegisterPage(View):
+    @method_decorator(login_required(login_url='login'))
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('tasks')
+        form = UserCreationForm()
+        return render(request, 'todo_list/register.html', {'form': form})
+
+    @method_decorator(login_required(login_url='login'))
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('tasks')
+        return render(request, 'todo_list/register.html', {'form': form})
 
 
 class RegisterPage(View):

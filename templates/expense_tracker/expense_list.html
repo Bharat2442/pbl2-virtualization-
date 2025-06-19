@@ -63,7 +63,7 @@
                 {% for expense in expenses %}
                 <tr>
                     <td>{{ expense.title }}</td>
-                    <td>₹{{ expense.amount }}</td>
+                    <td style="border: 1px solid #f5c2c7; background-color: #f8d7da; padding: 8px; border-radius: 5px;">₹{{ expense.amount }}</td>
                     <td>{{ expense.category }}</td>
                     <td>
                         <a href="{% url 'expense_delete' expense.id %}" class="btn btn-danger btn-sm">Delete</a>

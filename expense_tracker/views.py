@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Expense
-from .forms import ExpenseForm
-
-from django.shortcuts import render, redirect, get_object_or_404
 from .models import Expense, Budget
 from .forms import ExpenseForm, BudgetForm
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def expense_list(request):
     expenses = Expense.objects.all()
     budget_obj = Budget.objects.first()
@@ -24,6 +22,7 @@ def expense_list(request):
     }
     return render(request, 'expense_tracker/expense_list.html', context)
 
+@login_required(login_url='login')
 def add_budget(request):
     budget_obj = Budget.objects.first()
     if request.method == 'POST':
@@ -41,6 +40,7 @@ def add_budget(request):
             form = BudgetForm()
     return render(request, 'expense_tracker/add_budget.html', {'form': form})
 
+@login_required(login_url='login')
 def add_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
@@ -51,6 +51,7 @@ def add_expense(request):
         form = ExpenseForm()
     return render(request, 'expense_tracker/add_expense.html', {'form': form})
 
+@login_required(login_url='login')
 def expense_update(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
     if request.method == 'POST':
@@ -62,34 +63,7 @@ def expense_update(request, pk):
         form = ExpenseForm(instance=expense)
     return render(request, 'expense_tracker/add_expense.html', {'form': form})
 
-def expense_delete(request, pk):
-    expense = get_object_or_404(Expense, pk=pk)
-    if request.method == 'POST':
-        expense.delete()
-        return redirect('expense_list')
-    return render(request, 'expense_tracker/expense_confirm_delete.html', {'expense': expense})
-
-def add_expense(request):
-    if request.method == 'POST':
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('expense_list')
-    else:
-        form = ExpenseForm()
-    return render(request, 'expense_tracker/add_expense.html', {'form': form})
-
-def expense_update(request, pk):
-    expense = get_object_or_404(Expense, pk=pk)
-    if request.method == 'POST':
-        form = ExpenseForm(request.POST, instance=expense)
-        if form.is_valid():
-            form.save()
-            return redirect('expense_list')
-    else:
-        form = ExpenseForm(instance=expense)
-    return render(request, 'expense_tracker/add_expense.html', {'form': form})
-
+@login_required(login_url='login')
 def expense_delete(request, pk):
     expense = get_object_or_404(Expense, pk=pk)
     if request.method == 'POST':

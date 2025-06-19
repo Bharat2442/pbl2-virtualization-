@@ -34,38 +34,17 @@ class HomePageView(View):
 
 
 class RegisterPage(View):
-    @method_decorator(login_required(login_url='login'))
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('tasks')
+            return redirect('home')
         form = UserCreationForm()
         return render(request, 'todo_list/register.html', {'form': form})
 
-    @method_decorator(login_required(login_url='login'))
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('tasks')
-        return render(request, 'todo_list/register.html', {'form': form})
-
-
-class RegisterPage(View):
-    @method_decorator(login_required(login_url='login'))
-    def get(self, request):
-        if request.user.is_authenticated:
-            return redirect('tasks')
-        form = UserCreationForm()
-        return render(request, 'todo_list/register.html', {'form': form})
-
-    @method_decorator(login_required(login_url='login'))
-    def post(self, request):
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('tasks')
+            return redirect('login')
         return render(request, 'todo_list/register.html', {'form': form})
 
 
@@ -99,7 +78,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
-    success_url = '/'
+    success_url = '/tasks/'
 
     template_name = 'todo_list/task_form.html'
 
@@ -112,7 +91,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'description', 'complete']
-    success_url = '/'
+    success_url = '/tasks/'
 
     template_name = 'todo_list/task_form.html'
 
@@ -121,7 +100,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
-    success_url = '/'
+    success_url = '/tasks/'
     template_name = 'todo_list/task_confirm_delete.html'
 
     def get_queryset(self):
@@ -136,4 +115,4 @@ class TaskReorder(View):
             positionList = form.cleaned_data["position"].split(',')
             with transaction.atomic():
                 self.request.user.set_task_order(positionList)
-        return redirect('/')
+        return redirect('/tasks/')

@@ -22,13 +22,13 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        return reverse_lazy('home')
+        return reverse_lazy('tasks')  # Redirect to task list after login
 
 
 class RegisterPage(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('home')
+            return redirect('tasks')
         form = UserCreationForm()
         return render(request, 'todo_list/register.html', {'form': form})
 
@@ -37,7 +37,7 @@ class RegisterPage(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('tasks')
         return render(request, 'todo_list/register.html', {'form': form})
 
 

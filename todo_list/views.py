@@ -4,6 +4,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
@@ -26,12 +28,14 @@ class CustomLoginView(LoginView):
 
 
 class RegisterPage(View):
+    @method_decorator(login_required(login_url='login'))
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('tasks')
         form = UserCreationForm()
         return render(request, 'todo_list/register.html', {'form': form})
 
+    @method_decorator(login_required(login_url='login'))
     def post(self, request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -41,6 +45,7 @@ class RegisterPage(View):
         return render(request, 'todo_list/register.html', {'form': form})
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
@@ -59,12 +64,14 @@ class TaskList(LoginRequiredMixin, ListView):
         return context
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'todo_list/task.html'
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
@@ -77,6 +84,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'description', 'complete']
@@ -85,6 +93,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'todo_list/task_form.html'
 
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
@@ -96,6 +105,7 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
 
 
 class TaskReorder(View):
+    @method_decorator(login_required(login_url='login'))
     def post(self, request):
         form = PositionForm(request.POST)
         if form.is_valid():

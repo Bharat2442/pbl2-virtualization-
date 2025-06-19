@@ -6,6 +6,11 @@
 </div>
 
 <div class="card-body">
+    {% if form.errors %}
+    <div style="color: red; background-color: #f8d7da; border: 1px solid #f5c2c7; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        Invalid username or password. Please try again.
+    </div>
+    {% endif %}
     <form method="post" class="login-form">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username" required autofocus>
